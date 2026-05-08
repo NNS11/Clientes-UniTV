@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLIENTES UNITV FREE</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --text: #212529;
+      --card: #ffffff;
+      --primary: #28a745;
+      --border: #dee2e6;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121212;
+      --text: #e0e0e0;
+      --card: #1e1e1e;
+      --primary: #28a745;
+      --border: #333;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background-color 0.3s;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), #218838);
+      color: white;
+      text-align: center;
+      padding: 1.8rem 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .logo {
+      width: 140px;
+      height: auto;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .search-box, select.search-box {
+      flex: 1;
+      min-width: 200px;
+      padding: 14px 16px;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: var(--card);
+      color: var(--text);
+    }
+
+    select.search-box option {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .theme-toggle {
+      padding: 12px 18px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .client-item {
+      padding: 20px;
+    }
+
+    .rank {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .label {
+      font-weight: 500;
+      color: #666;
+      min-width: 120px;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"] .label {
+      color: #aaa;
+    }
+
+    .whatsapp-number {
+      font-weight: 500;
+      word-break: break-all;
+      opacity: 0.9;
+    }
+
+    .metric {
+      font-weight: 600;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .payment {
+      color: #20c997;
+      font-weight: 600;
+    }
+
+    .whatsapp-btn {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(37,211,102,0.4);
+      transition: all 0.3s ease;
+      margin-top: 16px;
+    }
+
+    .whatsapp-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37,211,102,0.6);
+      color: white;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    [data-theme="dark"] footer {
+      color: #888;
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <header>
+    <img src="https://tivva.com.br/wp-content/uploads/2025/11/tv-logo-1-1.webp" 
+         alt="UniTV" class="logo">
+    <h1>CLIENTES UNITV FREE</h1>
+    <p class="subtitle">Lista de Clientes</p>
+  </header>
+
+  <div class="container">
+    <div class="controls">
+      <input type="text" id="search" class="search-box" placeholder="Buscar por nome, WhatsApp, data, aparelho...">
+      <select id="sortSelect" class="search-box">
+        <option value="ultima_desc" selected>Últimos a comprar</option>
+        <option value="contas_desc">Mais contas compradas</option>
+        <option value="id_asc">Ordem cliente (1 → N)</option>
+        <option value="id_desc">Ordem cliente (N → 1)</option>
+      </select>
+      <button class="theme-toggle" id="themeToggle">🌙 Escuro</button>
+    </div>
+
+    <div id="listContainer"></div>
+  </div>
+
+  <script>
+    // ==================== DADOS DOS CLIENTES (SEUS DADOS ATUALIZADOS) ====================
+    let clientes = [
+      { 
+        id: 1,
+        nome: "Luis Rogerio F Pinto Jardim", 
+        whatsapp: "(21) 99974-1447",
+        totalContas: 2,
+        totalPago: 170.00,
+        aparelhos: ["TV Box (Amiko Xpro)"],
+        datasCompras: ["23/03/2026"],
+        ultimaCompra: "2026-03-23"
+      },
+      { 
+        id: 2,
+        nome: "Darlan de Almeida Oliveira", 
+        whatsapp: "(44) 93300-3078",
+        totalContas: 1,
+        totalPago: 100.00,
+        aparelhos: ["Celular"],
+        datasCompras: ["11/04/2026"],
+        ultimaCompra: "2026-04-11"
+      },
+      { 
+        id: 3,
+        nome: "André Luis de Oliveira", 
+        whatsapp: "(19) 99954-3025",
+        totalContas: 1,
+        totalPago: 100.00,
+        aparelhos: ["TV Box (BTV13)"],
+        datasCompras: ["21/04/2026"],
+        ultimaCompra: "2026-04-21"
+      },
+      { 
+        id: 4,
+        nome: "Morvan Torales Vianna", 
+        whatsapp: "(54) 99689-6959",
+        totalContas: 1,
+        totalPago: 100.00,
+        aparelhos: ["Smart TV (TCL)"],
+        datasCompras: ["28/04/2026"],
+        ultimaCompra: "2026-04-28"
+      },
+      { 
+        id: 5,
+        nome: "Renato Menezes de Lima Sa", 
+        whatsapp: "(11) 91448-2900",
+        totalContas: 2,
+        totalPago: 170.00,
+        aparelhos: ["Projetor (HY300), TV Box (Mini HDTV)"],
+        datasCompras: ["07/05/2026"],
+        ultimaCompra: "2026-05-07"
+      }
+    ];
+
+    let ordemAtual = 'ultima_desc';
+
+    function ordenarClientes() {
+      const sorted = [...clientes];
+      switch(ordemAtual) {
+        case 'ultima_desc':
+          sorted.sort((a, b) => new Date(b.ultimaCompra) - new Date(a.ultimaCompra));
+          break;
+        case 'contas_desc':
+          sorted.sort((a, b) => b.totalContas - a.totalContas);
+          break;
+        case 'id_asc':
+          sorted.sort((a, b) => a.id - b.id);
+          break;
+        case 'id_desc':
+          sorted.sort((a, b) => b.id - a.id);
+          break;
+      }
+      return sorted;
+    }
+
+    function renderizarLista(filtro = "") {
+      const ordenados = ordenarClientes();
+      const container = document.getElementById("listContainer");
+      container.innerHTML = "";
+
+      const termo = filtro.toLowerCase().trim();
+
+      const filtrados = ordenados.filter(cliente => {
+        if (!termo) return true;
+        const nomeMatch = cliente.nome.toLowerCase().includes(termo);
+        const whatsMatch = cliente.whatsapp.toLowerCase().includes(termo);
+        const idMatch = cliente.id.toString().includes(termo);
+        const aparelhosMatch = cliente.aparelhos.join(' ').toLowerCase().includes(termo);
+        const datasMatch = cliente.datasCompras.join(' ').toLowerCase().includes(termo);
+        const contasMatch = cliente.totalContas.toString().includes(termo);
+        const pagoMatch = cliente.totalPago.toString().includes(termo);
+        return nomeMatch || whatsMatch || idMatch || aparelhosMatch || datasMatch || contasMatch || pagoMatch;
+      });
+
+      if (filtrados.length === 0) {
+        container.innerHTML = `<div class="empty">Nenhum cliente encontrado</div>`;
+        return;
+      }
+
+      filtrados.forEach((cliente, index) => {
+        const numeroLimpo = cliente.whatsapp.replace(/\D/g, '');
+        const linkWhats = `https://wa.me/55${numeroLimpo}`;
+
+        const datasTexto = cliente.datasCompras.slice(0, 4).join(', ') + (cliente.datasCompras.length > 4 ? '...' : '');
+        const aparelhosTexto = cliente.aparelhos.join(', ').slice(0, 60) + (cliente.aparelhos.join(', ').length > 60 ? '...' : '');
+
+        const totalPagoFormat = cliente.totalPago.toLocaleString('pt-BR', { 
+          style: 'currency', 
+          currency: 'BRL' 
+        });
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="client-item">
+            <div class="rank">${index + 1}º</div>
+            
+            <div class="name">${cliente.nome}</div>
+            
+            <div class="info-row">
+              <span class="label">ID</span>
+              <span class="metric">👤 Cliente #${cliente.id}</span>
+            </div>
+            
+            <div class="info-row">
+              <span class="label">WhatsApp</span>
+              <span class="whatsapp-number">📞 ${cliente.whatsapp}</span>
+            </div>
+            
+            <div class="info-row">
+              <span class="label">Contas</span>
+              <span class="metric">📦 ${cliente.totalContas}</span>
+            </div>
+            
+            <div class="info-row">
+              <span class="label">Total Pago</span>
+              <span class="payment">💵 ${totalPagoFormat}</span>
+            </div>
+            
+            <div class="info-row">
+              <span class="label">Aparelhos</span>
+              <span class="metric">📱 ${aparelhosTexto}</span>
+            </div>
+            
+            <div class="info-row">
+              <span class="label">Datas Compras</span>
+              <span class="metric">🛒 ${datasTexto}</span>
+            </div>
+            
+            <a href="${linkWhats}" target="_blank" class="whatsapp-btn">
+              💬 Abrir WhatsApp
+            </a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ==================== TEMA ====================
+    function alternarTema() {
+      const body = document.documentElement;
+      const atual = body.getAttribute("data-theme") || "light";
+      const novo = atual === "dark" ? "light" : "dark";
+
+      body.setAttribute("data-theme", novo);
+      localStorage.setItem("tema", novo);
+
+      document.getElementById("themeToggle").textContent = 
+        novo === "dark" ? "☀️ Claro" : "🌙 Escuro";
+    }
+
+    function carregarTema() {
+      const temaSalvo = localStorage.getItem("tema") || "light";
+      document.documentElement.setAttribute("data-theme", temaSalvo);
+      document.getElementById("themeToggle").textContent = 
+        temaSalvo === "dark" ? "☀️ Claro" : "🌙 Escuro";
+    }
+
+    // ==================== EVENTOS ====================
+    document.getElementById("search").addEventListener("input", (e) => {
+      renderizarLista(e.target.value);
+    });
+
+    document.getElementById("sortSelect").addEventListener("change", (e) => {
+      ordemAtual = e.target.value;
+      const searchValue = document.getElementById("search").value;
+      renderizarLista(searchValue);
+    });
+
+    document.getElementById("themeToggle").addEventListener("click", alternarTema);
+
+    // Inicialização
+    window.onload = () => {
+      carregarTema();
+      renderizarLista();
+    };
+  </script>
+</body>
+</html>
