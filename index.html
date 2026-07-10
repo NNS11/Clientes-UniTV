@@ -3,212 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UNITV FREE - GESTÃO</title>
+  <title>GESTOR UNITV FREE</title>
   <style>
     :root {
-      --bg: #f8f9fa;
-      --text: #212529;
-      --card: #ffffff;
-      --primary: #28a745; /* Verde */
-      --cliente: #007bff; /* Azul */
-      --revendedor: #f39c12; /* Laranja/Dourado */
-      --border: #dee2e6;
-      --label: #666;
+      --bg: #0a0b0d;
+      --card-bg: #14161a;
+      --text-main: #ffffff;
+      --text-dim: #a0aec0;
+      --primary: #22c55e;
+      --cliente: #3b82f6;
+      --revendedor: #f59e0b;
+      --border: #2d323a;
     }
 
-    [data-theme="dark"] {
-      --bg: #121212;
-      --text: #e0e0e0;
-      --card: #1e1e1e;
-      --border: #333;
-      --label: #aaa;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      transition: background-color 0.3s;
+      color: var(--text-main);
+      padding-bottom: 50px;
     }
 
     header {
-      background: linear-gradient(135deg, var(--primary), #218838);
-      color: white;
+      padding: 40px 16px 20px;
       text-align: center;
-      padding: 1.5rem 1rem;
     }
 
-    .logo { width: 120px; margin-bottom: 10px; }
+    .logo { width: 90px; margin-bottom: 15px; }
+    header h1 { font-size: 1.1rem; letter-spacing: 3px; color: var(--primary); font-weight: 800; text-transform: uppercase; }
 
-    .container {
-      max-width: 640px;
-      margin: 20px auto;
-      padding: 0 16px;
-    }
+    .container { max-width: 500px; margin: 0 auto; padding: 0 16px; }
 
-    /* Estatísticas no topo */
-    .stats-card {
+    /* Dashboard */
+    .stats-grid {
       display: flex;
-      gap: 12px;
-      background: linear-gradient(135deg, var(--primary), #218838);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      color: white;
-      box-shadow: 0 4px 15px rgba(40,167,69,0.3);
-    }
-
-    .stat { text-align: center; flex: 1; }
-    .stat-label { font-size: 0.8rem; opacity: 0.9; display: block; }
-    .stat-value { font-size: 1.2rem; font-weight: 700; }
-
-    /* Abas de Categoria */
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 12px 5px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: 0.3s;
-    }
-
-    .tab-btn.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .controls { display: flex; gap: 10px; margin-bottom: 20px; }
-    .search-box {
-      flex: 1;
-      padding: 12px;
-      border: 2px solid var(--primary);
-      border-radius: 10px;
-      background: var(--card);
-      color: var(--text);
-    }
-
-    /* Estilo do Quadrado (Card) */
-    .card {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      position: relative;
-      border-top: 5px solid transparent;
-    }
-
-    .card.tipo-cliente { border-top-color: var(--cliente); }
-    .card.tipo-revendedor { border-top-color: var(--revendedor); }
-
-    .badge {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-    .badge-cliente { background: rgba(0, 123, 255, 0.2); color: var(--cliente); }
-    .badge-revendedor { background: rgba(243, 156, 18, 0.2); color: var(--revendedor); }
-
-    .client-name {
-      font-weight: bold;
-      font-size: 1.3rem;
-      margin-bottom: 18px;
-      display: block;
-      padding-right: 100px;
-    }
-
-    .info-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      font-size: 1.05rem;
-    }
-
-    .label {
-      width: 130px;
-      color: var(--label);
-      flex-shrink: 0;
-    }
-
-    .value-container {
-      display: flex;
-      align-items: center;
       gap: 10px;
-      font-weight: 500;
+      margin-bottom: 25px;
     }
 
-    .txt-green { color: var(--primary); }
-    .txt-cliente { color: var(--cliente); }
-    .txt-revendedor { color: var(--revendedor); }
+    .stat-item {
+      flex: 1;
+      background: var(--card-bg);
+      padding: 15px 5px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .stat-label { font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; display: block; font-weight: 700; }
+    .stat-value { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
+
+    /* Abas */
+    .tabs { display: flex; gap: 5px; margin-bottom: 20px; background: var(--card-bg); padding: 5px; border-radius: 12px; border: 1px solid var(--border); }
+    .tab-btn {
+      flex: 1; padding: 10px; border: none; background: transparent;
+      color: var(--text-dim); border-radius: 8px; cursor: pointer;
+      font-size: 0.75rem; font-weight: 700; transition: 0.2s;
+    }
+    .tab-btn.active { background: var(--primary); color: #000; }
+
+    /* Busca e Filtro */
+    .controls { display: flex; gap: 8px; margin-bottom: 25px; }
+    .search-box {
+      flex: 1.5; background: var(--card-bg); border: 1px solid var(--border);
+      padding: 14px; border-radius: 12px; color: white; outline: none; font-size: 14px;
+    }
+    .filter-select {
+      flex: 1; background: var(--card-bg); border: 1px solid var(--border);
+      padding: 10px; border-radius: 12px; color: white; cursor: pointer;
+      font-size: 12px; font-weight: 600; outline: none;
+    }
+
+    /* Card Vertical e Organizado */
+    .card {
+      background: var(--card-bg); border-radius: 16px; padding: 25px;
+      margin-bottom: 20px; border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .card-title-area { margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
+    .client-id { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; display: block; }
+    .client-name { font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
+
+    /* Dados um abaixo do outro com separação destacada */
+    .info-list { display: flex; flex-direction: column; }
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .info-item:last-child { border-bottom: none; }
+
+    .info-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
+    .info-val { font-size: 0.95rem; font-weight: 500; color: #ffffff; }
+    .txt-highlight { color: var(--primary); font-weight: 700; }
 
     .whatsapp-btn {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      background: #25D366;
-      color: white;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: 700;
-      text-align: center;
-      margin-top: 15px;
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; padding: 15px; background: #22c55e; color: #000;
+      text-decoration: none; border-radius: 12px; font-weight: 800;
+      margin-top: 20px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
     }
+
+    /* Cores de destaque */
+    .card-cliente .client-id { color: var(--cliente); }
+    .card-revendedor .client-id { color: var(--revendedor); }
+    .card-cliente { border-left: 4px solid var(--cliente); }
+    .card-revendedor { border-left: 4px solid var(--revendedor); }
   </style>
 </head>
-<body data-theme="dark">
+<body>
 
   <header>
     <img src="https://tivva.com.br/wp-content/uploads/2025/11/tv-logo-1-1.webp" alt="UniTV" class="logo">
-    <h1>GESTOR UNITV</h1>
+    <h1>GESTOR UNITV FREE</h1>
   </header>
 
   <div class="container">
-    <!-- Estatísticas Dinâmicas -->
-    <div class="stats-card">
-      <div class="stat">
-        <span class="stat-label">💰 Valor (<span id="txtFiltro">Geral</span>)</span>
-        <span id="totalFaturamento" class="stat-value">R$ 0,00</span>
+    <!-- Dashboard -->
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-label">💰 Saldo</span>
+        <span id="totalFaturamento" class="stat-value">R$ 0</span>
       </div>
-      <div class="stat">
+      <div class="stat-item">
+        <span class="stat-label">👥 Pessoas</span>
+        <span id="totalPessoas" class="stat-value">0</span>
+      </div>
+      <div class="stat-item">
         <span class="stat-label">📦 Contas</span>
         <span id="totalContas" class="stat-value">0</span>
       </div>
     </div>
 
-    <!-- Categorias -->
+    <!-- Abas -->
     <div class="tabs">
       <button class="tab-btn active" onclick="filtrar('todos', this)">TODOS</button>
       <button class="tab-btn" onclick="filtrar('cliente', this)">CLIENTES</button>
-      <button class="tab-btn" onclick="filtrar('revendedor', this)">REVENDEDORES</button>
+      <button class="tab-btn" onclick="filtrar('revendedor', this)">REVENDA</button>
     </div>
 
+    <!-- Controles -->
     <div class="controls">
-      <input type="text" id="search" class="search-box" placeholder="Pesquisar por nome...">
+      <input type="text" id="search" class="search-box" placeholder="Buscar por nome...">
+      <select id="ordemFiltro" class="filter-select" onchange="renderizar()">
+        <option value="padrao">Ordenar por...</option>
+        <option value="mais_contas">Mais contas</option>
+        <option value="maior_intervalo">Maior intervalo</option>
+        <option value="menor_intervalo">Menor intervalo</option>
+      </select>
     </div>
 
     <div id="listContainer"></div>
   </div>
 
   <script>
-    // Todos os seus dados originais estão aqui como "cliente"
     let dados = [
       { id: 1, tipo: "cliente", nome: "Luis Rogerio F Pinto Jardim", whatsapp: "(21) 99974-1447", totalContas: 2, totalPago: 170.00, aparelhos: ["TV Box (Amiko Xpro)"], datasCompras: ["27/03/2026", "09/04/2026"] },
       { id: 2, tipo: "cliente", nome: "Darlan de Almeida Oliveira", whatsapp: "(44) 93300-3078", totalContas: 1, totalPago: 100.00, aparelhos: ["Celular"], datasCompras: ["11/04/2026"] },
@@ -216,26 +166,34 @@
       { id: 4, tipo: "cliente", nome: "Morvan Torales Vianna", whatsapp: "(54) 99689-6959", totalContas: 1, totalPago: 100.00, aparelhos: ["Android TV (TCL)"], datasCompras: ["28/04/2026"] },
       { id: 5, tipo: "cliente", nome: "Renato Menezes de Lima Sa", whatsapp: "(11) 91448-2900", totalContas: 2, totalPago: 170.00, aparelhos: ["Projetor (HY300)", "TV Box"], datasCompras: ["07/05/2026"] },
       { id: 6, tipo: "cliente", nome: "Carlos Eduardo Pinto", whatsapp: "(12) 98804-1525", totalContas: 1, totalPago: 100.00, aparelhos: ["Projetor (Wanbo T4)"], datasCompras: ["10/05/2026"] },
-{ id: 7, tipo: "cliente", nome: "Joanísio Pereira Lopes", whatsapp: "(33) 99136-7212", totalContas: 2, totalPago: 160.00, aparelhos: ["Android TV (AIWA)"], datasCompras: ["04/07/2026"] },
-{ id: 8, tipo: "cliente", nome: "Antonio Magno Carvalho", whatsapp: "(41) 99115-9971", totalContas: 1, totalPago: 100.00, aparelhos: ["TV Stick (Fire Stick)"], datasCompras: ["06/07/2026"] },
-      
-      // Exemplo de Revendedores (Para teste)
+      { id: 7, tipo: "cliente", nome: "Joanísio Pereira Lopes", whatsapp: "(33) 99136-7212", totalContas: 2, totalPago: 160.00, aparelhos: ["Android TV (AIWA)"], datasCompras: ["04/07/2026"] },
+      { id: 8, tipo: "cliente", nome: "Antonio Magno Carvalho", whatsapp: "(41) 99115-9971", totalContas: 1, totalPago: 100.00, aparelhos: ["TV Stick (Fire Stick)"], datasCompras: ["06/07/2026"] },
       { id: 1, tipo: "revendedor", nome: "Phablo Vinicius Dias de Sousa", whatsapp: "(61) 98678-1225", totalContas: 1, totalPago: 55.00, aparelhos: [], datasCompras: ["18/06/2026"] },
       { id: 2, tipo: "revendedor", nome: "Edson Ferreira de Lira", whatsapp: "(11) 97090-8963", totalContas: 2, totalPago: 110.00, aparelhos: [], datasCompras: ["18/06/2026"] },
-{ id: 3, tipo: "revendedor", nome: "Bruno Porto de Souza", whatsapp: "(11) 94084-8693", totalContas: 2, totalPago: 110.00, aparelhos: [], datasCompras: ["24/06/2026"] },
-{ id: 4, tipo: "revendedor", nome: "Daniel Tavares D Avila", whatsapp: "(31) 98895-1000", totalContas: 2, totalPago: 110.00, aparelhos: [], datasCompras: ["26/06/2026"] },
-{ id: 5, tipo: "revendedor", nome: "Bernardo Braz Pinheiro", whatsapp: "(31) 99667-7268", totalContas: 4, totalPago: 200.00, aparelhos: [], datasCompras: ["30/06/2026, 03/07/2026"] }
+      { id: 3, tipo: "revendedor", nome: "Bruno Porto de Souza", whatsapp: "(11) 94084-8693", totalContas: 2, totalPago: 110.00, aparelhos: [], datasCompras: ["24/06/2026"] },
+      { id: 4, tipo: "revendedor", nome: "Daniel Tavares D Avila", whatsapp: "(31) 98895-1000", totalContas: 2, totalPago: 110.00, aparelhos: [], datasCompras: ["26/06/2026"] },
+      { id: 5, tipo: "revendedor", nome: "Bernardo Braz Pinheiro", whatsapp: "(31) 99667-7268", totalContas: 4, totalPago: 200.00, aparelhos: [], datasCompras: ["30/06/2026", "03/07/2026"] }
     ];
 
     let filtroAtual = 'todos';
 
+    function getUltimaCompraTime(datas) {
+      let dts = [];
+      datas.forEach(d => {
+        if(typeof d === 'string') d.split(',').forEach(s => dts.push(s.trim()));
+      });
+      return Math.max(...dts.map(d => {
+        const p = d.split('/');
+        return new Date(p[2], p[1]-1, p[0]).getTime();
+      }));
+    }
+
     function atualizarStats(lista) {
       const faturamento = lista.reduce((sum, item) => sum + item.totalPago, 0);
       const contas = lista.reduce((sum, item) => sum + item.totalContas, 0);
-      document.getElementById('totalFaturamento').textContent = faturamento.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('totalFaturamento').textContent = faturamento.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+      document.getElementById('totalPessoas').textContent = lista.length;
       document.getElementById('totalContas').textContent = contas;
-      const labels = { todos: "Geral", cliente: "Clientes", revendedor: "Revendedores" };
-      document.getElementById('txtFiltro').textContent = labels[filtroAtual];
     }
 
     function filtrar(tipo, btn) {
@@ -248,62 +206,58 @@
     function renderizar() {
       const container = document.getElementById("listContainer");
       const busca = document.getElementById("search").value.toLowerCase();
+      const ordem = document.getElementById("ordemFiltro").value;
       
       let filtrados = dados.filter(p => filtroAtual === 'todos' ? true : p.tipo === filtroAtual);
       filtrados = filtrados.filter(p => p.nome.toLowerCase().includes(busca));
+
+      if (ordem === "mais_contas") filtrados.sort((a, b) => b.totalContas - a.totalContas);
+      else if (ordem === "maior_intervalo") filtrados.sort((a, b) => getUltimaCompraTime(a.datasCompras) - getUltimaCompraTime(b.datasCompras));
+      else if (ordem === "menor_intervalo") filtrados.sort((a, b) => getUltimaCompraTime(b.datasCompras) - getUltimaCompraTime(a.datasCompras));
 
       atualizarStats(filtrados);
       container.innerHTML = "";
 
       filtrados.forEach(p => {
         const whatsLimpo = p.whatsapp.replace(/\D/g, '');
-        const corId = p.tipo === 'cliente' ? 'txt-cliente' : 'txt-revendedor';
-        const labelTipo = p.tipo === 'cliente' ? 'Cliente' : 'Revendedor';
         
-        // Verifica se é cliente para mostrar a linha de aparelhos
-        const linhaAparelhos = p.tipo === 'cliente' ? `
-          <div class="info-row">
-            <span class="label">Aparelhos</span>
-            <div class="value-container txt-green">📱 ${p.aparelhos.join(', ')}</div>
-          </div>
-        ` : '';
-
         const card = document.createElement("div");
-        card.className = `card tipo-${p.tipo}`;
+        card.className = `card card-${p.tipo}`;
         card.innerHTML = `
-          <span class="badge badge-${p.tipo}">${labelTipo}</span>
-          <span class="client-name">${p.nome}</span>
-          
-          <div class="info-row">
-            <span class="label">ID</span>
-            <div class="value-container ${corId}">👤 ${labelTipo} #${p.id}</div>
+          <div class="card-title-area">
+            <span class="client-id">#${p.id} • ${p.tipo.toUpperCase()}</span>
+            <h3 class="client-name">${p.nome}</h3>
           </div>
           
-          <div class="info-row">
-            <span class="label">WhatsApp</span>
-            <div class="value-container" style="color:var(--text)">📞 ${p.whatsapp}</div>
-          </div>
-          
-          <div class="info-row">
-            <span class="label">Contas</span>
-            <div class="value-container txt-green">📦 ${p.totalContas}</div>
-          </div>
-          
-          <div class="info-row">
-            <span class="label">Total Pago</span>
-            <div class="value-container txt-green">💵 R$ ${p.totalPago.toFixed(2).replace('.', ',')}</div>
-          </div>
-          
-          ${linhaAparelhos}
-          
-          <div class="info-row">
-            <span class="label">Datas Compras</span>
-            <div class="value-container txt-green">🛒 ${p.datasCompras.join(', ')}</div>
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-label">📞 WhatsApp</span>
+              <span class="info-val">${p.whatsapp}</span>
+            </div>
+            
+            <div class="info-item">
+              <span class="info-label">📦 Contas Compradas</span>
+              <span class="info-val txt-highlight">${p.totalContas}</span>
+            </div>
+            
+            <div class="info-item">
+              <span class="info-label">💰 Valor Total Pago</span>
+              <span class="info-val txt-highlight">R$ ${p.totalPago.toFixed(2).replace('.',',')}</span>
+            </div>
+            
+            ${p.tipo === 'cliente' ? `
+            <div class="info-item">
+              <span class="info-label">📺 Aparelhos Cadastrados</span>
+              <span class="info-val">${p.aparelhos.join(', ')}</span>
+            </div>` : ''}
+
+            <div class="info-item">
+              <span class="info-label">🛒 Histórico de Compras</span>
+              <span class="info-val">${p.datasCompras.join(' | ')}</span>
+            </div>
           </div>
 
-          <a href="https://wa.me/55${whatsLimpo}" target="_blank" class="whatsapp-btn">
-            Abrir WhatsApp
-          </a>
+          <a href="https://wa.me/55${whatsLimpo}" target="_blank" class="whatsapp-btn">Abrir Conversa no WhatsApp</a>
         `;
         container.appendChild(card);
       });
