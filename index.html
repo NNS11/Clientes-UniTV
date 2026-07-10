@@ -3,22 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CLIENTES UNITV FREE</title>
+  <title>UNITV FREE - GESTÃO</title>
   <style>
     :root {
       --bg: #f8f9fa;
       --text: #212529;
       --card: #ffffff;
-      --primary: #28a745;
+      --primary: #28a745; /* Verde */
+      --cliente: #007bff; /* Azul */
+      --revendedor: #f39c12; /* Laranja/Dourado */
       --border: #dee2e6;
+      --label: #666;
     }
 
     [data-theme="dark"] {
       --bg: #121212;
       --text: #e0e0e0;
       --card: #1e1e1e;
-      --primary: #28a745;
       --border: #333;
+      --label: #aaa;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,7 +31,6 @@
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      min-height: 100vh;
       transition: background-color 0.3s;
     }
 
@@ -36,25 +38,10 @@
       background: linear-gradient(135deg, var(--primary), #218838);
       color: white;
       text-align: center;
-      padding: 1.8rem 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 1.5rem 1rem;
     }
 
-    .logo {
-      width: 140px;
-      height: auto;
-      margin-bottom: 12px;
-    }
-
-    h1 {
-      font-size: 1.75rem;
-      margin-bottom: 6px;
-    }
-
-    .subtitle {
-      font-size: 1rem;
-      opacity: 0.9;
-    }
+    .logo { width: 120px; margin-bottom: 10px; }
 
     .container {
       max-width: 640px;
@@ -62,434 +49,268 @@
       padding: 0 16px;
     }
 
-    .controls {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .search-box, select.search-box {
-      flex: 1;
-      min-width: 200px;
-      padding: 14px 16px;
-      border: 2px solid var(--primary);
-      border-radius: 12px;
-      font-size: 1rem;
-      background: var(--card);
-      color: var(--text);
-    }
-
-    select.search-box option {
-      background: var(--card);
-      color: var(--text);
-    }
-
-    .theme-toggle {
-      padding: 12px 18px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
+    /* Estatísticas no topo */
     .stats-card {
       display: flex;
       gap: 12px;
       background: linear-gradient(135deg, var(--primary), #218838);
       border-radius: 12px;
       padding: 16px;
-      box-shadow: 0 4px 16px rgba(40,167,69,0.3);
       margin-bottom: 16px;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      border: none;
       color: white;
+      box-shadow: 0 4px 15px rgba(40,167,69,0.3);
     }
 
-    .stats-card .stat {
-      text-align: center;
+    .stat { text-align: center; flex: 1; }
+    .stat-label { font-size: 0.8rem; opacity: 0.9; display: block; }
+    .stat-value { font-size: 1.2rem; font-weight: 700; }
+
+    /* Abas de Categoria */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
       flex: 1;
-      min-width: 130px;
+      padding: 12px 5px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
     }
 
-    .stats-card .stat-label {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.9) !important;
-      display: block;
-      margin-bottom: 4px;
-      font-weight: 500;
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
     }
 
-    .stats-card .stat-value {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #fff !important;
-      display: block;
+    .controls { display: flex; gap: 10px; margin-bottom: 20px; }
+    .search-box {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid var(--primary);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--text);
     }
 
+    /* Estilo do Quadrado (Card) */
     .card {
       background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-
-    .client-item {
+      border-radius: 12px;
       padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      position: relative;
+      border-top: 5px solid transparent;
     }
 
-    .rank {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 12px;
-    }
+    .card.tipo-cliente { border-top-color: var(--cliente); }
+    .card.tipo-revendedor { border-top-color: var(--revendedor); }
 
-    .name {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 14px;
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .badge-cliente { background: rgba(0, 123, 255, 0.2); color: var(--cliente); }
+    .badge-revendedor { background: rgba(243, 156, 18, 0.2); color: var(--revendedor); }
+
+    .client-name {
+      font-weight: bold;
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+      display: block;
+      padding-right: 100px;
     }
 
     .info-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       font-size: 1.05rem;
     }
 
     .label {
-      font-weight: 500;
-      color: #666;
-      min-width: 120px;
+      width: 130px;
+      color: var(--label);
       flex-shrink: 0;
     }
 
-    [data-theme="dark"] .label {
-      color: #aaa;
-    }
-
-    .whatsapp-number {
-      font-weight: 500;
-      word-break: break-all;
-      opacity: 0.9;
-    }
-
-    .metric {
-      font-weight: 600;
-      color: var(--primary);
+    .value-container {
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex: 1;
+      gap: 10px;
+      font-weight: 500;
     }
 
-    .payment {
-      color: #20c997;
-      font-weight: 600;
-    }
+    .txt-green { color: var(--primary); }
+    .txt-cliente { color: var(--cliente); }
+    .txt-revendedor { color: var(--revendedor); }
 
     .whatsapp-btn {
       display: block;
       width: 100%;
-      padding: 14px 20px;
-      background: linear-gradient(135deg, #25D366, #128C7E);
+      padding: 14px;
+      background: #25D366;
       color: white;
       text-decoration: none;
-      border-radius: 12px;
+      border-radius: 10px;
       font-weight: 700;
-      font-size: 1.1rem;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(37,211,102,0.4);
-      transition: all 0.3s ease;
-      margin-top: 16px;
-    }
-
-    .whatsapp-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(37,211,102,0.6);
-      color: white;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 60px 20px;
-      color: #888;
-      font-size: 1.1rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px 20px;
-      color: #666;
-      font-size: 0.9rem;
-    }
-
-    [data-theme="dark"] footer {
-      color: #888;
+      margin-top: 15px;
     }
   </style>
 </head>
-<body data-theme="light">
+<body data-theme="dark">
 
   <header>
-    <img src="https://tivva.com.br/wp-content/uploads/2025/11/tv-logo-1-1.webp" 
-         alt="UniTV" class="logo">
-    <h1>CLIENTES UNITV FREE</h1>
-    <p class="subtitle">Lista de Clientes</p>
+    <img src="https://tivva.com.br/wp-content/uploads/2025/11/tv-logo-1-1.webp" alt="UniTV" class="logo">
+    <h1>GESTOR UNITV</h1>
   </header>
 
   <div class="container">
-    <!-- Card de Estatísticas Totais (agora em cima da barra de pesquisa, verde e menor) -->
-    <div id="statsContainer" class="stats-card">
+    <!-- Estatísticas Dinâmicas -->
+    <div class="stats-card">
       <div class="stat">
-        <span class="stat-label">💰 Faturamento Total</span>
+        <span class="stat-label">💰 Valor (<span id="txtFiltro">Geral</span>)</span>
         <span id="totalFaturamento" class="stat-value">R$ 0,00</span>
       </div>
       <div class="stat">
-        <span class="stat-label">📦 Contas Vendidas</span>
-        <span id="totalContasVendidas" class="stat-value">0</span>
+        <span class="stat-label">📦 Contas</span>
+        <span id="totalContas" class="stat-value">0</span>
       </div>
     </div>
 
+    <!-- Categorias -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="filtrar('todos', this)">TODOS</button>
+      <button class="tab-btn" onclick="filtrar('cliente', this)">CLIENTES</button>
+      <button class="tab-btn" onclick="filtrar('revendedor', this)">REVENDEDORES</button>
+    </div>
+
     <div class="controls">
-      <input type="text" id="search" class="search-box" placeholder="Buscar por nome, WhatsApp, data, aparelho...">
-      <select id="sortSelect" class="search-box">
-        <option value="ultima_desc" selected>Últimos a comprar</option>
-        <option value="contas_desc">Mais contas compradas</option>
-        <option value="id_asc">Ordem cliente (1 → N)</option>
-        <option value="id_desc">Ordem cliente (N → 1)</option>
-      </select>
-      <button class="theme-toggle" id="themeToggle">🌙 Escuro</button>
+      <input type="text" id="search" class="search-box" placeholder="Pesquisar por nome...">
     </div>
 
     <div id="listContainer"></div>
   </div>
 
   <script>
-    // ==================== DADOS DOS CLIENTES (mantidos seus dados atualizados) ====================
-    let clientes = [
-      { 
-        id: 1,
-        nome: "Luis Rogerio F Pinto Jardim", 
-        whatsapp: "(21) 99974-1447",
-        totalContas: 2,
-        totalPago: 170.00,
-        aparelhos: ["TV Box (Amiko Xpro)"],
-        datasCompras: ["27/03/2026", "09/04/2026"],
-        ultimaCompra: "2026-04-09"
-      },
-      { 
-        id: 2,
-        nome: "Darlan de Almeida Oliveira", 
-        whatsapp: "(44) 93300-3078",
-        totalContas: 1,
-        totalPago: 100.00,
-        aparelhos: ["Celular"],
-        datasCompras: ["11/04/2026"],
-        ultimaCompra: "2026-04-11"
-      },
-      { 
-        id: 3,
-        nome: "André Luis de Oliveira", 
-        whatsapp: "(19) 99954-3025",
-        totalContas: 1,
-        totalPago: 100.00,
-        aparelhos: ["TV Box (BTV13)"],
-        datasCompras: ["21/04/2026"],
-        ultimaCompra: "2026-04-21"
-      },
-      { 
-        id: 4,
-        nome: "Morvan Torales Vianna", 
-        whatsapp: "(54) 99689-6959",
-        totalContas: 1,
-        totalPago: 100.00,
-        aparelhos: ["Smart TV (TCL)"],
-        datasCompras: ["28/04/2026"],
-        ultimaCompra: "2026-04-28"
-      },
-      { 
-        id: 5,
-        nome: "Renato Menezes de Lima Sa", 
-        whatsapp: "(11) 91448-2900",
-        totalContas: 2,
-        totalPago: 170.00,
-        aparelhos: ["Projetor (HY300), TV Box (Mini HDTV)"],
-        datasCompras: ["07/05/2026"],
-        ultimaCompra: "2026-05-07"
-      },
-      { 
-        id: 6,
-        nome: "Carlos Eduardo Pinto", 
-        whatsapp: "(12) 98804-1525",
-        totalContas: 1,
-        totalPago: 100.00,
-        aparelhos: ["Projetor (Wanbo T4)"],
-        datasCompras: ["10/05/2026"],
-        ultimaCompra: "2026-05-10"
-      }
+    // Todos os seus dados originais estão aqui como "cliente"
+    let dados = [
+      { id: 1, tipo: "cliente", nome: "Luis Rogerio F Pinto Jardim", whatsapp: "(21) 99974-1447", totalContas: 2, totalPago: 170.00, aparelhos: ["TV Box (Amiko Xpro)"], datasCompras: ["27/03/2026", "09/04/2026"] },
+      { id: 2, tipo: "cliente", nome: "Darlan de Almeida Oliveira", whatsapp: "(44) 93300-3078", totalContas: 1, totalPago: 100.00, aparelhos: ["Celular"], datasCompras: ["11/04/2026"] },
+      { id: 3, tipo: "cliente", nome: "André Luis de Oliveira", whatsapp: "(19) 99954-3025", totalContas: 1, totalPago: 100.00, aparelhos: ["TV Box (BTV13)"], datasCompras: ["21/04/2026"] },
+      { id: 4, tipo: "cliente", nome: "Morvan Torales Vianna", whatsapp: "(54) 99689-6959", totalContas: 1, totalPago: 100.00, aparelhos: ["Android TV (TCL)"], datasCompras: ["28/04/2026"] },
+      { id: 5, tipo: "cliente", nome: "Renato Menezes de Lima Sa", whatsapp: "(11) 91448-2900", totalContas: 2, totalPago: 170.00, aparelhos: ["Projetor (HY300)", "TV Box"], datasCompras: ["07/05/2026"] },
+      { id: 6, tipo: "cliente", nome: "Carlos Eduardo Pinto", whatsapp: "(12) 98804-1525", totalContas: 1, totalPago: 100.00, aparelhos: ["Projetor (Wanbo T4)"], datasCompras: ["10/05/2026"] },
+{ id: 7, tipo: "cliente", nome: "Joanísio Pereira Lopes", whatsapp: "(33) 99136-7212", totalContas: 2, totalPago: 160.00, aparelhos: ["Android TV (AIWA)"], datasCompras: ["04/07/2026"] },
+{ id: 8, tipo: "cliente", nome: "Antonio Magno Carvalho", whatsapp: "(41) 99115-9971", totalContas: 1, totalPago: 100.00, aparelhos: ["TV Stick (Fire Stick)"], datasCompras: ["06/07/2026"] },
+      
+      // Exemplo de Revendedores (Para teste)
+      { id: 1, tipo: "revendedor", nome: "Phablo Vinicius Dias De Sousa", whatsapp: "(61) 98678-1225", totalContas: 1, totalPago: 55.00, aparelhos: [], datasCompras: ["18/06/2026"] },
+      { id: 2, tipo: "revendedor", nome: "Edson Ferreira de Lira", whatsapp: "(11) 97090-8963", totalContas: 2, totalPago: 110.00, aparelhos: [], datasCompras: ["18/06/2026"] },
+{ id: 3, tipo: "revendedor", nome: "Bruno Porto de Souza", whatsapp: "(11) 94084-8693", totalContas: 2, totalPago: 110.00, aparelhos: [], datasCompras: ["24/06/2026"] },
+{ id: 4, tipo: "revendedor", nome: "Daniel Tavares D Avila", whatsapp: "(31) 98895-1000", totalContas: 2, totalPago: 110.00, aparelhos: [], datasCompras: ["26/06/2026"] },
+{ id: 5, tipo: "revendedor", nome: "Bernardo Braz Pinheiro", whatsapp: "(31) 99667-7268", totalContas: 4, totalPago: 200.00, aparelhos: [], datasCompras: ["30/06/2026, 03/07/2026"] }
     ];
 
-    let ordemAtual = 'ultima_desc';
+    let filtroAtual = 'todos';
 
-    // ==================== FUNÇÃO PARA ATUALIZAR ESTATÍSTICAS TOTAIS ====================
-    function atualizarStats() {
-      const totalPago = clientes.reduce((sum, c) => sum + c.totalPago, 0);
-      const totalContas = clientes.reduce((sum, c) => sum + c.totalContas, 0);
-
-      document.getElementById('totalFaturamento').textContent = 
-        totalPago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-      document.getElementById('totalContasVendidas').textContent = totalContas.toLocaleString();
+    function atualizarStats(lista) {
+      const faturamento = lista.reduce((sum, item) => sum + item.totalPago, 0);
+      const contas = lista.reduce((sum, item) => sum + item.totalContas, 0);
+      document.getElementById('totalFaturamento').textContent = faturamento.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('totalContas').textContent = contas;
+      const labels = { todos: "Geral", cliente: "Clientes", revendedor: "Revendedores" };
+      document.getElementById('txtFiltro').textContent = labels[filtroAtual];
     }
 
-    function ordenarClientes() {
-      const sorted = [...clientes];
-      switch(ordemAtual) {
-        case 'ultima_desc':
-          sorted.sort((a, b) => new Date(b.ultimaCompra) - new Date(a.ultimaCompra));
-          break;
-        case 'contas_desc':
-          sorted.sort((a, b) => b.totalContas - a.totalContas);
-          break;
-        case 'id_asc':
-          sorted.sort((a, b) => a.id - b.id);
-          break;
-        case 'id_desc':
-          sorted.sort((a, b) => b.id - a.id);
-          break;
-      }
-      return sorted;
+    function filtrar(tipo, btn) {
+      filtroAtual = tipo;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderizar();
     }
 
-    function renderizarLista(filtro = "") {
-      const ordenados = ordenarClientes();
+    function renderizar() {
       const container = document.getElementById("listContainer");
+      const busca = document.getElementById("search").value.toLowerCase();
+      
+      let filtrados = dados.filter(p => filtroAtual === 'todos' ? true : p.tipo === filtroAtual);
+      filtrados = filtrados.filter(p => p.nome.toLowerCase().includes(busca));
+
+      atualizarStats(filtrados);
       container.innerHTML = "";
 
-      const termo = filtro.toLowerCase().trim();
-
-      const filtrados = ordenados.filter(cliente => {
-        if (!termo) return true;
-        const nomeMatch = cliente.nome.toLowerCase().includes(termo);
-        const whatsMatch = cliente.whatsapp.toLowerCase().includes(termo);
-        const idMatch = cliente.id.toString().includes(termo);
-        const aparelhosMatch = cliente.aparelhos.join(' ').toLowerCase().includes(termo);
-        const datasMatch = cliente.datasCompras.join(' ').toLowerCase().includes(termo);
-        const contasMatch = cliente.totalContas.toString().includes(termo);
-        const pagoMatch = cliente.totalPago.toString().includes(termo);
-        return nomeMatch || whatsMatch || idMatch || aparelhosMatch || datasMatch || contasMatch || pagoMatch;
-      });
-
-      if (filtrados.length === 0) {
-        container.innerHTML = `<div class="empty">Nenhum cliente encontrado</div>`;
-        return;
-      }
-
-      filtrados.forEach((cliente, index) => {
-        const numeroLimpo = cliente.whatsapp.replace(/\D/g, '');
-        const linkWhats = `https://wa.me/55${numeroLimpo}`;
-
-        const datasTexto = cliente.datasCompras.slice(0, 4).join(', ') + (cliente.datasCompras.length > 4 ? '...' : '');
-        const aparelhosTexto = cliente.aparelhos.join(', ').slice(0, 60) + (cliente.aparelhos.join(', ').length > 60 ? '...' : '');
-
-        const totalPagoFormat = cliente.totalPago.toLocaleString('pt-BR', { 
-          style: 'currency', 
-          currency: 'BRL' 
-        });
+      filtrados.forEach(p => {
+        const whatsLimpo = p.whatsapp.replace(/\D/g, '');
+        const corId = p.tipo === 'cliente' ? 'txt-cliente' : 'txt-revendedor';
+        const labelTipo = p.tipo === 'cliente' ? 'Cliente' : 'Revendedor';
+        
+        // Verifica se é cliente para mostrar a linha de aparelhos
+        const linhaAparelhos = p.tipo === 'cliente' ? `
+          <div class="info-row">
+            <span class="label">Aparelhos</span>
+            <div class="value-container txt-green">📱 ${p.aparelhos.join(', ')}</div>
+          </div>
+        ` : '';
 
         const card = document.createElement("div");
-        card.className = "card";
+        card.className = `card tipo-${p.tipo}`;
         card.innerHTML = `
-          <div class="client-item">
-            <div class="rank">${index + 1}º</div>
-            
-            <div class="name">${cliente.nome}</div>
-            
-            <div class="info-row">
-              <span class="label">ID</span>
-              <span class="metric">👤 Cliente #${cliente.id}</span>
-            </div>
-            
-            <div class="info-row">
-              <span class="label">WhatsApp</span>
-              <span class="whatsapp-number">📞 ${cliente.whatsapp}</span>
-            </div>
-            
-            <div class="info-row">
-              <span class="label">Contas</span>
-              <span class="metric">📦 ${cliente.totalContas}</span>
-            </div>
-            
-            <div class="info-row">
-              <span class="label">Total Pago</span>
-              <span class="payment">💵 ${totalPagoFormat}</span>
-            </div>
-            
-            <div class="info-row">
-              <span class="label">Aparelhos</span>
-              <span class="metric">📱 ${aparelhosTexto}</span>
-            </div>
-            
-            <div class="info-row">
-              <span class="label">Datas Compras</span>
-              <span class="metric">🛒 ${datasTexto}</span>
-            </div>
-            
-            <a href="${linkWhats}" target="_blank" class="whatsapp-btn">
-              💬 Abrir WhatsApp
-            </a>
+          <span class="badge badge-${p.tipo}">${labelTipo}</span>
+          <span class="client-name">${p.nome}</span>
+          
+          <div class="info-row">
+            <span class="label">ID</span>
+            <div class="value-container ${corId}">👤 ${labelTipo} #${p.id}</div>
           </div>
+          
+          <div class="info-row">
+            <span class="label">WhatsApp</span>
+            <div class="value-container" style="color:var(--text)">📞 ${p.whatsapp}</div>
+          </div>
+          
+          <div class="info-row">
+            <span class="label">Contas</span>
+            <div class="value-container txt-green">📦 ${p.totalContas}</div>
+          </div>
+          
+          <div class="info-row">
+            <span class="label">Total Pago</span>
+            <div class="value-container txt-green">💵 R$ ${p.totalPago.toFixed(2).replace('.', ',')}</div>
+          </div>
+          
+          ${linhaAparelhos}
+          
+          <div class="info-row">
+            <span class="label">Datas Compras</span>
+            <div class="value-container txt-green">🛒 ${p.datasCompras.join(', ')}</div>
+          </div>
+
+          <a href="https://wa.me/55${whatsLimpo}" target="_blank" class="whatsapp-btn">
+            Abrir WhatsApp
+          </a>
         `;
         container.appendChild(card);
       });
     }
 
-    // ==================== TEMA ====================
-    function alternarTema() {
-      const body = document.documentElement;
-      const atual = body.getAttribute("data-theme") || "light";
-      const novo = atual === "dark" ? "light" : "dark";
-
-      body.setAttribute("data-theme", novo);
-      localStorage.setItem("tema", novo);
-
-      document.getElementById("themeToggle").textContent = 
-        novo === "dark" ? "☀️ Claro" : "🌙 Escuro";
-    }
-
-    function carregarTema() {
-      const temaSalvo = localStorage.getItem("tema") || "light";
-      document.documentElement.setAttribute("data-theme", temaSalvo);
-      document.getElementById("themeToggle").textContent = 
-        temaSalvo === "dark" ? "☀️ Claro" : "🌙 Escuro";
-    }
-
-    // ==================== EVENTOS ====================
-    document.getElementById("search").addEventListener("input", (e) => {
-      renderizarLista(e.target.value);
-    });
-
-    document.getElementById("sortSelect").addEventListener("change", (e) => {
-      ordemAtual = e.target.value;
-      const searchValue = document.getElementById("search").value;
-      renderizarLista(searchValue);
-    });
-
-    document.getElementById("themeToggle").addEventListener("click", alternarTema);
-
-    // Inicialização
-    window.onload = () => {
-      carregarTema();
-      atualizarStats();  // Calcula e mostra totais
-      renderizarLista();
-    };
+    document.getElementById("search").addEventListener("input", renderizar);
+    window.onload = renderizar;
   </script>
 </body>
 </html>
