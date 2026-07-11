@@ -63,9 +63,9 @@
     .tab-btn.active { background: var(--primary); color: #000; }
 
     /* Busca e Filtro */
-    .controls { display: flex; gap: 8px; margin-bottom: 25px; }
+    .controls { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
     .search-box {
-      flex: 1.5; background: var(--card-bg); border: 1px solid var(--border);
+      flex: 1 1 100%; background: var(--card-bg); border: 1px solid var(--border);
       padding: 14px; border-radius: 12px; color: white; outline: none; font-size: 14px;
     }
     .filter-select {
@@ -147,6 +147,14 @@
     <!-- Controles -->
     <div class="controls">
       <input type="text" id="search" class="search-box" placeholder="Buscar por nome...">
+      <select id="filtroAparelho" class="filter-select" onchange="renderizar()">
+        <option value="todos">Todos Aparelhos</option>
+        <option value="TV Box">TV Box</option>
+        <option value="TV Stick">TV Stick</option>
+        <option value="Celular">Celular</option>
+        <option value="Android TV">Android TV</option>
+        <option value="Projetor">Projetor</option>
+      </select>
       <select id="ordemFiltro" class="filter-select" onchange="renderizar()">
         <option value="padrao">Ordenar por...</option>
         <option value="mais_contas">Mais contas</option>
@@ -208,9 +216,19 @@
       const container = document.getElementById("listContainer");
       const busca = document.getElementById("search").value.toLowerCase();
       const ordem = document.getElementById("ordemFiltro").value;
+      const filtroAparelho = document.getElementById("filtroAparelho").value;
       
       let filtrados = dados.filter(p => filtroAtual === 'todos' ? true : p.tipo === filtroAtual);
+      
+      // Filtro por nome
       filtrados = filtrados.filter(p => p.nome.toLowerCase().includes(busca));
+
+      // Filtro por Aparelho
+      if (filtroAparelho !== 'todos') {
+        filtrados = filtrados.filter(p => 
+          p.aparelhos && p.aparelhos.some(ap => ap.includes(filtroAparelho))
+        );
+      }
 
       if (ordem === "mais_contas") filtrados.sort((a, b) => b.totalContas - a.totalContas);
       else if (ordem === "maior_intervalo") filtrados.sort((a, b) => getUltimaCompraTime(a.datasCompras) - getUltimaCompraTime(b.datasCompras));
